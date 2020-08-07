@@ -318,8 +318,8 @@ example, I've got this error in MozJPEG bindings:
 
 Here, it's not a leak, but us writing to a memory outside of the allocated boundaries 😱
 
-Digging into the code of MozJPEG, we find that the problem here is that `jpeg_mem_dest` — the
-function that we use to allocate a memory destination for JPEG — [reuses existing values of
+Digging into the code of MozJPEG, we find that the problem here is that `jpeg_mem_dest`—the
+function that we use to allocate a memory destination for JPE  [reuses existing values of
 `outbuffer` and `outsize` when they're
 non-zero](https://github.com/mozilla/mozjpeg/blob/1d2320994dd0d293d39cfaea3d13060b60f32c45/jdatadst.c#L282-L288):
 
@@ -372,10 +372,10 @@ in the UI. Indeed, now we get the following report:
 
 ![image](leak2.png)
 
-262,144 bytes — looks like the whole sample image is leaked from `jpeg_finish_compress`!
+262,144 bytes—looks like the whole sample image is leaked from `jpeg_finish_compress`!
 
 After checking out the docs and the official examples, it turns out that `jpeg_finish_compress`
-doesn't free the memory allocated by our earlier `jpeg_mem_dest` call — it only frees the
+doesn't free the memory allocated by our earlier `jpeg_mem_dest` call—it only frees the
 compression structure, even though that compression structure already knows about our memory
 destination… Sigh.
 
@@ -583,14 +583,14 @@ codecs](https://github.com/GoogleChromeLabs/squoosh/pull/780).
 
 What lessons can we learn and share from this refactoring that could be applied to other codebases?
 
-- Don't use memory views backed by WebAssembly — no matter which language it's built from - beyond a
+- Don't use memory views backed by WebAssembly—no matter which language it's built from - beyond a
    single invocation. You can't rely on them surviving any longer than that, and you won't be able
    to catch these bugs by conventional means, so if you need to store the data for later, copy it to
    the JavaScript side and store it there.
 - If possible, use a safe memory management language or, at least, safe type wrappers, instead of
    operating on raw pointers directly. This won't save you from bugs on the JavaScript ↔ WebAssembly
    boundary, but at least it will reduce the surface for bugs self-contained by the native code.
-- No matter which language you use, run code with sanitizers during development — they can help to
+- No matter which language you use, run code with sanitizers during development—they can help to
    catch not only problems in the native code, but also some issues across the JavaScript ↔
    WebAssembly boundary, such as forgetting to call `.delete()` or passing in invalid pointers from
    the JavaScript side.
