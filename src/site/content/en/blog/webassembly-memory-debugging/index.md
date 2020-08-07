@@ -319,7 +319,7 @@ example, I've got this error in MozJPEG bindings:
 Here, it's not a leak, but us writing to a memory outside of the allocated boundaries 😱
 
 Digging into the code of MozJPEG, we find that the problem here is that `jpeg_mem_dest`—the
-function that we use to allocate a memory destination for JPE  [reuses existing values of
+function that we use to allocate a memory destination for JPEG—[reuses existing values of
 `outbuffer` and `outsize` when they're
 non-zero](https://github.com/mozilla/mozjpeg/blob/1d2320994dd0d293d39cfaea3d13060b60f32c45/jdatadst.c#L282-L288):
 
