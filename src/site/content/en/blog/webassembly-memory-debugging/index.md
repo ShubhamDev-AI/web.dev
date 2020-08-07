@@ -583,7 +583,7 @@ codecs](https://github.com/GoogleChromeLabs/squoosh/pull/780).
 
 What lessons can we learn and share from this refactoring that could be applied to other codebases?
 
-- Don't use memory views backed by WebAssembly—no matter which language it's built from - beyond a
+- Don't use memory views backed by WebAssembly—no matter which language it's built from—beyond a
    single invocation. You can't rely on them surviving any longer than that, and you won't be able
    to catch these bugs by conventional means, so if you need to store the data for later, copy it to
    the JavaScript side and store it there.
