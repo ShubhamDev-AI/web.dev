@@ -89,7 +89,7 @@ export async function process(data: ImageData, opts: QuantizeOptions) {
   module.free_result();
 
   return new ImageData(
-    new Uint8ClampedArray(result.buffer),
+    new Uint8ClampedArray(result.view),
     result.width,
     result.height
   );
@@ -230,7 +230,7 @@ exited and all the temporary C++ objects were freed by the time we run those che
   module.doLeakCheck();
 
   return new ImageData(
-    new Uint8ClampedArray(result.buffer),
+    new Uint8ClampedArray(result.view),
     result.width,
     result.height
   );
@@ -300,7 +300,7 @@ Indeed, when we do that in JavaScript for our class:
   module.doLeakCheck();
 
   return new ImageData(
-    new Uint8ClampedArray(result.buffer),
+    new Uint8ClampedArray(result.view),
     result.width,
     result.height
   );
@@ -407,19 +407,23 @@ to all the codecs, as well as other similar codebases.
 First of all, let's fix the use-after-free issue from the beginning of the post. For that, we need
 to clone the data from the WebAssembly-backed view before marking it as free on the JavaScript side:
 
-```ts/4,15/10-14
+```ts/4-8,19/14-18
   // …
 
   const result = /* … */;
 
-  const imgData = new ImageData(new Uint8ClampedArray(result.view), result.width, result.height);
+  const imgData = new ImageData(
+    new Uint8ClampedArray(result.view),
+    result.width,
+    result.height
+  );
 
   module.free_result();
   result.delete();
   module.doLeakCheck();
 
   return new ImageData(
-    new Uint8ClampedArray(result.buffer),
+    new Uint8ClampedArray(result.view),
     result.width,
     result.height
   );
@@ -538,7 +542,7 @@ any other garbage-collected object:
   const result = /* … */;
 
   const imgData = new ImageData(
-    new Uint8ClampedArray(result.buffer),
+    new Uint8ClampedArray(result.view),
     result.width,
     result.height
   );
