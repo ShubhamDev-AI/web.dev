@@ -100,7 +100,7 @@ Do you spot an issue? Hint: it's
 [use-after-free](https://owasp.org/www-community/vulnerabilities/Using_freed_memory), but in
 JavaScript!
 
-In Emscripten, `typed_memory_view` returns a JavaScript `Uint8Array` backed by the WebAssembly
+In Emscripten, `typed_memory_view` returns a JavaScript `Uint8Array` backed by the WebAssembly (Wasm)
 memory buffer, with `byteOffset` and `byteLength` set to the given pointer and length. The main
 point is that this is a TypedArray *view* into a WebAssembly memory buffer, rather than a
 JavaScript-owned copy of the data.
