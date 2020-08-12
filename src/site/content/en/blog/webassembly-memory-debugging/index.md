@@ -118,7 +118,7 @@ WebAssembly memory. When `WebAssembly.Memory` is grown either via JavaScript API
 `memory.grow` instruction, it invalidates the existing `ArrayBuffer` and, transitively, any views
 backed by it.
 
-Let me use DevTools or Node.js console to demonstrate this behaviour:
+Let me use the DevTools (or Node.js) console to demonstrate this behavior:
 
 ```js
 > memory = new WebAssembly.Memory({ initial: 1 })
