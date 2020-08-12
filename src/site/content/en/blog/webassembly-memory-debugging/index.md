@@ -4,6 +4,7 @@ subhead: While JavaScript is fairly forgiving in cleaning up after itself, stati
 description: Learn how to use WebAssembly to bring libraries, written in other languages, to the Web in a safe and idiomatic manner.
 date: 2020-08-06
 hero: hero.jpg
+alt: A WebAssembly-branded hose leaking water onto the street.
 authors:
   - rreverser
 tags:
