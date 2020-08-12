@@ -1,5 +1,5 @@
 ---
-title: Debugging memory leaks in WebAssembly
+title: Debugging memory leaks in WebAssembly using Emscripten
 subhead: While JavaScript is fairly forgiving in cleaning up after itself, static languages are definitely not…
 description: Learn how to use WebAssembly to bring libraries, written in other languages, to the Web in a safe and idiomatic manner.
 date: 2020-08-06
